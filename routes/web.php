@@ -1,6 +1,8 @@
 <?php
 
+use App\Models\Employee;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\EmployeeController;
 
 /*
@@ -14,20 +16,22 @@ use App\Http\Controllers\EmployeeController;
 |
 */
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
-
 Route::redirect('/', 'employees', 301);
 
-Route::get('employees', [EmployeeController::class, 'index'])->name('employee.index');
+Route::controller(EmployeeController::class)->group(function () {
+  Route::get('employees', 'index')->name('employee.index');
+  Route::get('employee/create',  'create')->name('employee.create');
+  Route::post('employee/create',  'store')->name('employee.store');
+  Route::get('employee/{employeeID}',  'show')->name('employee.show');
+  Route::get('employee/{employeeID}/edit',  'edit')->name('employee.edit');
+  Route::put('employee/{employeeID}/edit',  'update')->name('employee.update');
+  Route::delete('employee/{employeeID}',  'destroy')->name('employee.destroy');
+});
 
-Route::get('employee/create', [EmployeeController::class, 'create'])->name('employee.create');
-Route::post('employee/create', [EmployeeController::class, 'store'])->name('employee.store');
+Route::get('register', [UserController::class, 'register'])->name('user.register');
+Route::post('register/store', [UserController::class, 'store'])->name('user.store');
 
-Route::get('employee/{employeeID}', [EmployeeController::class, 'show'])->name('employee.show');
+Route::get('login', [UserController::class, 'login'])->name('user.login');
+Route::post('login/auth', [UserController::class, 'authenticate'])->name('user.authenticate');
 
-Route::get('employee/{employeeID}/edit', [EmployeeController::class, 'edit'])->name('employee.edit');
-Route::put('employee/{employeeID}/edit', [EmployeeController::class, 'update'])->name('employee.update');
-
-Route::delete('employee/{employeeID}', [EmployeeController::class, 'destroy'])->name('employee.destroy');
+Route::post('logout', [UserController::class, 'logout'])->name('user.logout');
