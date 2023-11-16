@@ -35,20 +35,25 @@ class EmployeeController extends Controller
     {
         // dd($request->all());
 
-        $suffix = Employee::SUFFIX;
+        try {
+            $suffix = Employee::SUFFIX;
 
-        $validated = $request->validate([
-            // 'employee_id' => ['required', 'unique:employees,employee_id', 'max:6'],
-            'firstname' => ['required', 'max:50'],
-            'middlename' => ['nullable', 'min:2', 'max:50'],
-            'lastname' => ['required', 'max:50'],
-            'suffix' => ['nullable', 'in:' . implode(',', $suffix)],
-        ]);
+            $validated = $request->validate([
+                // 'employee_id' => ['required', 'unique:employees,employee_id', 'max:6'],
+                'firstname' => ['required', 'max:50'],
+                'middlename' => ['nullable', 'min:2', 'max:50'],
+                'lastname' => ['required', 'max:50'],
+                'suffix' => ['nullable', 'in:' . implode(',', $suffix)],
+            ]);
 
-        $employee = Employee::create($validated);
-        $employee->save();
+            $employee = Employee::create($validated);
+            $employee->save();
 
-        return redirect()->route('employee.index')->with('success', 'Employee created successfully.');
+            return redirect()->route('employee.index')->with('success', 'Employee created successfully.');
+        } catch (\Exception $e) {
+            dd($e->getMessage());
+            return back()->withInput()->withErrors(['error' => 'An error occurred while creating the employee.']);
+        }
     }
 
 
