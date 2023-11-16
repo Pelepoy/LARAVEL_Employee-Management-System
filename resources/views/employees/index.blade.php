@@ -1,24 +1,23 @@
 @extends('layouts.app')
-
 @section('content')
+
 <div class="px-5">
     @if (Session::has('success'))
-    <div class="alert alert-success">
-        {{ Session::get('success') }}
-    </div>
+        <div class="alert alert-success">
+            {{ Session::get('success') }}
+        </div>
     @endif
 </div>
-
     <div class="p-5">
-       
         <div class='float-end mb-3'>
-            <a href="{{ route('employee.create') }}" class='btn btn-primary shadow'>Add new employee</a>
+            <a href="{{ route('employee.create') }}" class='btn btn-primary shadow'>+Add new employee</a>
+                <form action="{{ route('user.logout')}}" method="POST">
+                    @csrf
+                <button class="btn btn-warning">Logout</button>
+            </form>
         </div>
-
         <h1 class="fs-1 text-center mb-5">DARK CONTINENT EMPLOYEES</h1>
-
         <table class="table table-bordered shadow">
-
             <thead>
                 <tr>
                     <th>Employee ID</th>
