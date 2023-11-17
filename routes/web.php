@@ -19,19 +19,20 @@ use App\Http\Controllers\EmployeeController;
 Route::redirect('/', 'employees', 301);
 
 Route::controller(EmployeeController::class)->group(function () {
-  Route::get('employees', 'index')->name('employee.index');
-  Route::get('employee/create',  'create')->name('employee.create');
-  Route::post('employee/create',  'store')->name('employee.store');
-  Route::get('employee/{employeeID}',  'show')->name('employee.show');
-  Route::get('employee/{employeeID}/edit',  'edit')->name('employee.edit');
-  Route::put('employee/{employeeID}/edit',  'update')->name('employee.update');
-  Route::delete('employee/{employeeID}',  'destroy')->name('employee.destroy');
+    Route::get('employees', 'index')->name('employee.index')->middleware('auth');
+    Route::get('employee/create',  'create')->name('employee.create');
+    Route::post('employee/create',  'store')->name('employee.store');
+    Route::get('employee/{employeeID}',  'show')->name('employee.show');
+    Route::get('employee/{employeeID}/edit',  'edit')->name('employee.edit');
+    Route::put('employee/{employeeID}/edit',  'update')->name('employee.update');
+    Route::delete('employee/{employeeID}',  'destroy')->name('employee.destroy');
 });
 
-Route::get('register', [UserController::class, 'register'])->name('user.register');
-Route::post('register/store', [UserController::class, 'store'])->name('user.store');
 
-Route::get('login', [UserController::class, 'login'])->name('user.login');
-Route::post('login/auth', [UserController::class, 'authenticate'])->name('user.authenticate');
-
-Route::post('logout', [UserController::class, 'logout'])->name('user.logout');
+Route::controller(UserController::class)->group(function () {
+    Route::get('register', 'register')->name('user.register');
+    Route::post('register/store', 'store')->name('user.store');
+    Route::get('login', 'login')->name('login')->middleware('guest');
+    Route::post('login/auth', 'authenticate')->name('user.authenticate');
+    Route::post('logout', 'logout')->name('user.logout');
+});
