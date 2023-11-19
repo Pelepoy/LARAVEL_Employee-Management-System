@@ -10,7 +10,9 @@ class UserController extends Controller
 {
     public function register()
     {
-        return view('users.register');
+        return view('users.register', [
+            'title' => 'Sic Mundus | Employees Register',
+        ]);
     }
 
     public function store(Request $request)
@@ -40,8 +42,12 @@ class UserController extends Controller
 
     public function login()
     {
+        $title = 'Sic Mundus | Employees Login';
+
         if (View::exists('users.login')) {
-            return view('users.login');
+            return view('users.login', [
+                'title' => $title,
+            ]);
         } else {
             return abort(404);
         }
