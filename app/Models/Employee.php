@@ -19,6 +19,7 @@ class Employee extends Model
 
 	public const SUFFIX = ['Jr', 'Sr', 'II', 'III', 'IV', 'V'];
 
+
 	protected static function boot()
 	{
 		parent::boot();
